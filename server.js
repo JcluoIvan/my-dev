@@ -9,9 +9,7 @@ app.get('/', function(req, res) {
     res.end(fs.readFileSync('./www/index.html'));
 });
 app.get('*', function(req, res) {
-
     res.end(fs.readFileSync('./www' + req.url));
-
 });
 
 

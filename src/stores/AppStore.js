@@ -1,7 +1,9 @@
-import AppDispatcher from '../dispatcher/AppDispatcher';
+import Dispatcher from '../dispatcher/Dispatcher';
+import UserDispatcher from '../dispatcher/UserDispatcher';
 import { EventEmitter } from 'events';
 import { ActionType, StoreEvent } from '../constants/AppConstants';
 
+import UserStore from './UserStore';
 
 let storage = {
     message: '',
@@ -17,7 +19,7 @@ const AppStore = Object.assign({}, EventEmitter.prototype, {
 
 
 
-    dispatcherIndex: AppDispatcher.register(function(data) {
+    dispatcherIndex: Dispatcher.register(function(data) {
         switch (data.actionType) {
             case ActionType.DEMO:
                 storage.message = data.message;

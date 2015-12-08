@@ -1,15 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {Router, Route, IndexRoute, Link} from 'react-router';
+const TB = require('react-toolbox');
+const BS = require('react-bootstrap');
 
-const RT = require('react-toolbox');
 
 import AppAction from './actions/AppAction';
 import AppStore from './stores/AppStore';
 import { StoreEvent } from './constants/AppConstants';
 
-let methods = {
+import UserAction from './actions/UserAction';
+import UserStore from './stores/UserStore';
+import { UserEvent } from './constants/UserConstants';
 
-};
+
+import MyComponents from './components'
+
+let methods = {};
 
 class App extends React.Component {
 
@@ -20,21 +27,31 @@ class App extends React.Component {
 
     componentDidMount() {
         methods.handlerDemo = this.handlerDemo.bind(this);
+        methods.handlerSignIn = this.handlerSignIn.bind(this);
+
         AppStore.on(StoreEvent.ON_DEMO, methods.handlerDemo);
+        UserStore.on(UserEvent.ON_SIGNIN, methods.handlerSignIn);
 
     }
 
     componentWillUnmount() {
         AppStore.removeListener(StoreEvent.ON_DEMO, methods.handlerDemo);
+        UserStore.removeListener(UserEvent.ON_SIGNIN, methods.handlerSignIn);
+    }
+
+    handlerSignIn() {
+        console.log('SignIn');
     }
 
     handlerDemo () {
 
         let message = AppStore.getDemoMessage();
+        if (message.length > 5) UserAction.signIn();
         this.setState({message});
     }
 
     onMessageChange (value) {
+
         AppAction.demo(value);
 
     }    
@@ -42,33 +59,42 @@ class App extends React.Component {
     render () {
         return (
             <div>
-                <RT.IconMenu icon='more_vert' position='top-left' menuRipple>
-                    <RT.MenuItem value='download' icon='get_app' caption='Download' />
-                    <RT.MenuItem value='help' icon='favorite' caption='Favorite' />
-                    <RT.MenuItem value='settings' icon='open_in_browser' caption='Open in app' />
-                    <RT.MenuDivider />
-                    <RT.MenuItem value='signout' icon='delete' caption='Delete' disabled />
-                </RT.IconMenu>
-
-                <p> <label> Message : </label> {this.state.message} </p>
-                <RT.Input 
+                <TB.Input 
                     type="text" 
-                    label="Message" 
+                    label="Account 22" 
                     onChange={this.onMessageChange}
-                    value={this.state.message} />
+                    value={this.state.message}/>
+                <BS.Well>
+                    {this.state.message}
+                </BS.Well>
+                <BS.Button bsStyle="primary" block>Click</BS.Button>
+                  <TB.IconMenu icon='more_vert' position='top-left' menuRipple>
+                    <TB.MenuItem value='download' icon='get_app' caption='Download' />
+                    <TB.MenuItem value='help' icon='favorite' caption='Favorite' />
+                    <TB.MenuItem value='settings' icon='open_in_browser' caption='Open in app' />
+                    <TB.MenuDivider />
+                    <TB.MenuItem value='signout' icon='delete' caption='Delete' disabled />
+                  </TB.IconMenu>
             </div>
         );
     }
-
 };
 
-
-
-
-
+const renderRoute = () => {
+    // <IndexRoute component={MyComponents.SignIn} />
+    return (
+        <Router>
+            <Route path="/">
+                <IndexRoute component={App} />
+                
+                <Route path="main" component={MyComponents.Main} />
+                <Route path="bet-list" component={MyComponents.BetList} />
+                <Route path="bet-bill" componet={MyComponents.BetBill} />
+            </Route>
+        </Router>
+    );
+};
 
 ReactDOM.render((
-
-    <App />
-
+    renderRoute() 
 ), document.getElementById('app'));

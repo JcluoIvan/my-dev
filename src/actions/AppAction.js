@@ -1,10 +1,14 @@
-import AppDispatcher from '../dispatcher/AppDispatcher';
+import Dispatcher from '../dispatcher/Dispatcher';
 import {ActionType} from '../constants/AppConstants';
+
+
+
+
 
 export default {
 
     demo (message) {
-        AppDispatcher.dispatch({
+        Dispatcher.dispatch({
             actionType: ActionType.DEMO,
             message
         });
