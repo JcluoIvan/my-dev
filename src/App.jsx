@@ -13,8 +13,10 @@ import UserAction from './actions/UserAction';
 import UserStore from './stores/UserStore';
 import { UserEvent } from './constants/UserConstants';
 
-
 import MyComponents from './components'
+
+import './asset/style.less';
+
 
 let methods = {};
 
@@ -67,6 +69,7 @@ class App extends React.Component {
                 <BS.Well>
                     {this.state.message}
                 </BS.Well>
+                <div id="test"> Hello </div>
                 <BS.Button bsStyle="primary" block>Click</BS.Button>
                   <TB.IconMenu icon='more_vert' position='top-left' menuRipple>
                     <TB.MenuItem value='download' icon='get_app' caption='Download' />

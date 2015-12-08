@@ -23,11 +23,11 @@ module.exports = {
                 // loader: ExtractTextPlugin.extract('style', 'css?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss!sass?sourceMap')
                 loader: 'style!css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss!sass'
             },
-            // { 
-            //     test: /\.less$/, 
-            //     // loader: "style!css!less"
-            //     loader: ExtractTextPlugin.extract("style-loader", "css-loader!less-loader")
-            // },
+            { 
+                test: /\.less$/, 
+                loader: "style!css!less"
+                // loader: ExtractTextPlugin.extract("style-loader", "css-loader!less-loader")
+            },
             { test: /\.css$/, loader: 'style!css' },
             // { test: /\.png$/,  loader: "url-loader?limit=1000" },
             // { test: /\.jpg$/,  loader: "url-loader?limit=1000" },
