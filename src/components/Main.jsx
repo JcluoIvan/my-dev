@@ -11,7 +11,7 @@ class Main extends React.Component {
 
     render () {
         return (
-            <div >
+            <div>
                 <button onClick={this.toSignIn.bind(this)}> sign out </button>
             </div>
         );
