@@ -10,11 +10,11 @@ var Game = function(data) {
 
 };
 
-Game.prototype.getId = function() {
+Game.prototype.getId = function() : Number {
     return this.storage.id;
 };
 
-Game.prototype.getName = function() {
+Game.prototype.getName = function() : String {
     return this.storage.name;
 };
 
