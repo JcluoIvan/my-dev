@@ -1,5 +1,4 @@
 import Dispatcher from '../dispatcher/Dispatcher';
-import UserDispatcher from '../dispatcher/UserDispatcher';
 import { EventEmitter } from 'events';
 import { ActionType, StoreEvent } from '../constants/AppConstants';
 
