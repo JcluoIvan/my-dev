@@ -6,12 +6,27 @@ const TB = require('react-toolbox');
 
 class SignIn extends React.Component {
 
+    constructor (props) {
+        super(props);
+        this.state = {acc: '', pass: ''};
+        // this.setState({account: '', password})
+    }
+
     componentDidMount() {
         console.log(this.context.history);
     }
 
     toMain () {
         this.context.history.push('/main');
+    }
+
+    onAccountChange (value) {
+        this.setState({acc: value});
+    }
+
+    onPasswordChange (value) {
+        let star = new Array(value.length + 1).join('*');
+        this.setState({pass: star});
     }
 
 
@@ -22,7 +37,10 @@ class SignIn extends React.Component {
                 <div>
                     <span>手機登入畫面</span>
                     <section>
-                        <TB.Input type='text' label='Name' name='name' value='guest' maxLength={16} />
+                        <TB.Input type='text' label='帳號' onChange={this.onAccountChange.bind(this)} 
+                            value={this.state.acc} />
+                        <TB.Input type='password' label='密碼' onChange={this.onPasswordChange.bind(this)} 
+                            value={this.state.pass} />
                     </section>
                 </div>
                 <button onClick={this.toMain.bind(this)}> click </button>
