@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { PropTypes } from 'react-router';
+import './asset/SignIn';
 
 class SignIn extends React.Component {
 
@@ -15,7 +16,8 @@ class SignIn extends React.Component {
 
     render () {
         return (
-            <div>
+            <div id="component-SignIn">
+                <div>LOGO</div>
                 <button onClick={this.toMain.bind(this)}> click </button>
             </div>
         );
