@@ -9,7 +9,7 @@ module.exports = {
         filename: './www/js/build.js'
     },
     resolve: {
-        extensions: ['', '.jsx', '.scss', '.js', '.json', 'less']
+        extensions: ['', '.jsx', '.scss', '.js', '.json', '.less']
     },
     devtool: 'source-map',
     module: {
