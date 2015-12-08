@@ -12,10 +12,10 @@
     "react-addons-css-transition-group": ">=0.14.3",
     "react-dom": ">=0.14.3",
     "react-router": ">=1.0.1",
+    "react-static-container": "^1.0.0",
     "react-toolbox": "0.13.3",
     "jquery": "^2.1.4",
     "history": "^1.13.1"
-
   },
   "devDependencies": {
     "autoprefixer": "^6.1.2",
