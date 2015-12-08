@@ -1,15 +1,13 @@
 import Dispatcher from '../dispatcher/Dispatcher';
 import { GameAction } from '../constants/GameConstants';
 
-import Game from '../module/Game';
-
 import Ajax from '../plugins/Ajax';
 
 /* 更新遊戲清單 */
-let updateGame = function () {
+let updateGames = function () {
 
     /* ajax ... */
-    let _games = [
+    let games = [
         {id: 1, name: 'MLB 棒球'},
         {id: 2, name: 'CPBL 棒球'},
         {id: 3, name: 'SBL 籃球'},
@@ -23,7 +21,6 @@ let updateGame = function () {
     ];
     /* ajax finish */
 
-    let games = _games.map(g => new Game(g));
     Dispatcher.dispatch({
         action: GameAction.GAMES_UPDATED,
         games,
@@ -35,5 +32,5 @@ let updateGame = function () {
 export default {
 
     /* 更新遊戲清單 */
-    updateGame,
+    updateGames,
 };

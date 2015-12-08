@@ -1,13 +1,14 @@
 
-import GameDipatcher from '../dispatcher/GameDipatcher';
 import { EventEmitter } from 'events';
-import { UserAction, UserEvent} from '../constants/UserConstants';
+import Dispatcher from '../dispatcher/Dispatcher';
+import { GameAction, GameEvent} from '../constants/GameConstants';
 
+import { Game } from '../modules';
 let storage = {
     games: {},
 };
 
-const UserStore = Object.assign({}, EventEmitter.prototype, {
+const GameStore = Object.assign({}, EventEmitter.prototype, {
 
     /* 取得遊戲清單 */
     getGames() : Array {
@@ -19,8 +20,12 @@ const UserStore = Object.assign({}, EventEmitter.prototype, {
         return storage.games.filter(g => g.getId() === id)[0] || null;
     },
 
-    dispatcherIndex: GameDipatcher.register(function(data) {
+    dispatcherIndex: Dispatcher.register(function(data) {
         switch (data.action) {
+            case GameAction.GAMES_UPDATED:
+                storage.games = data.games.map(g => new Game(g));
+                GameStore.emit(GameEvent.ON_GAMES_UPDATED);
+                break;
             
         }
 
@@ -28,4 +33,4 @@ const UserStore = Object.assign({}, EventEmitter.prototype, {
 
 
 });
-export default UserStore;
+export default GameStore;

@@ -17,8 +17,13 @@ const UserStore = Object.assign({}, EventEmitter.prototype, {
         return storage.isSignIn === true;
     },
 
+    /* user id */
+    getId () : Number {
+        return storage.user.id;
+    },
+
     /* 帳號 */
-    getAccount () : String{
+    getAccount () : String {
         return storage.user.account;
     },
 
@@ -44,7 +49,7 @@ const UserStore = Object.assign({}, EventEmitter.prototype, {
                     account,
                     name
                 };
-                UserStore.emit(UserAction.ON_SIGNIN);
+                UserStore.emit(UserEvent.ON_SIGNIN);
                 break;
         }
 

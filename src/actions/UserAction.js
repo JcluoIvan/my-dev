@@ -5,9 +5,13 @@ import Ajax from '../plugins/Ajax';
 
 /* 執行登入 */
 let signIn = function (account, password) {
+    /* do ajax */
+    let [id, name, money] = [1, 'User', 10000];
+    /* ajax finish */
+
     Dispatcher.dispatch({
         action: UserAction.SIGN_IN,
-        user: {account, password},
+        user: {id, account, name, money}
     });
 };
 
