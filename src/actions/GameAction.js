@@ -15,9 +15,9 @@ let updateGames = function () {
         {id: 5, name: 'CBL 籃球'},
         {id: 6, name: 'ABL 籃球'},
         {id: 7, name: 'CBA 籃球'},
-        {id: 5, name: 'NBL 籃球'},
-        {id: 6, name: 'ACB 籃球'},
-        {id: 7, name: 'EL 籃球'},
+        {id: 8, name: 'NBL 籃球'},
+        {id: 9, name: 'ACB 籃球'},
+        {id: 10, name: 'EL 籃球'},
     ];
     /* ajax finish */
 
