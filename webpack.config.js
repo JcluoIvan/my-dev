@@ -4,9 +4,14 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-    entry: './src/App.jsx',
+    entry: [
+        'webpack-dev-server/client?http://127.0.0.1:8000',
+        'webpack/hot/only-dev-server',
+        path.resolve(__dirname, 'src/App.jsx')
+    ],
     output: {
-        filename: './www/js/build.js'
+        path: path.resolve('./www'),
+        filename: 'build.js'
     },
     resolve: {
         extensions: ['', '.jsx', '.scss', '.js', '.json', '.less']
@@ -16,8 +21,10 @@ module.exports = {
         loaders: [
             {
                 test: /(\.js|\.jsx)$/,
+                loaders: ['react-hot', 'babel'],                
+                // loaders: ['babel'],                
                 exclude: /(node_modules)/,
-                loader: 'babel'
+                include: path.join(__dirname, 'src')
             }, {
                 test: /(\.scss|\.css)$/,
                 // loader: ExtractTextPlugin.extract('style', 'css?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss!sass?sourceMap')
