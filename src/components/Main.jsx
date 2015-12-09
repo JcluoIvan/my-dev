@@ -27,7 +27,7 @@ class Main extends React.Component {
         GameAction.updateGames();
     }
 
-    componentWillUnmount () {
+    componentWillUnMount () {
         GameStore.removeListener(methods.updateGameList);
     }
 
