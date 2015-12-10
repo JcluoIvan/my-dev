@@ -8,11 +8,18 @@ let signIn = function (account, password) {
     /* do ajax */
     let [id, name, money] = [1, 'User', 10000];
     /* ajax finish */
-
-    Dispatcher.dispatch({
-        action: UserAction.SIGN_IN,
-        user: {id, account, name, money}
-    });
+    if('sam' === account && '0000' === password){
+        Dispatcher.dispatch({
+            action: UserAction.SIGN_IN,
+            user: {id, account, name, money}
+        });
+    } else {
+        Dispatcher.dispatch({
+            action: UserAction.SIGNIN_FAIL,
+            validates: {account: '帳號錯誤！', password: '密碼錯誤！'}
+        });
+    }
+    
 };
 
 /* 執行登出 */

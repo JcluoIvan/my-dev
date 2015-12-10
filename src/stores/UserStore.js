@@ -6,9 +6,11 @@ import { UserAction, UserEvent} from '../constants/UserConstants';
 let storage = {
     user: {},
     isSignIn: false,
+    validates: {
+        account: '', 
+        password: '',
+    }
 };
-
-
 
 const UserStore = Object.assign({}, EventEmitter.prototype, {
 
@@ -37,7 +39,12 @@ const UserStore = Object.assign({}, EventEmitter.prototype, {
         return storage.user.money;
     },
 
+    getValidates() : Object {
+        return storage.validates;
+    },
+
     dispatcherIndex: Dispatcher.register(function(data) {
+
         switch (data.action) {
 
             /* 登入成功 */
@@ -50,6 +57,12 @@ const UserStore = Object.assign({}, EventEmitter.prototype, {
                     name
                 };
                 UserStore.emit(UserEvent.ON_SIGNIN);
+                break;
+            /* 登入失敗 */
+            case UserAction.SIGNIN_FAIL:
+                storage.validates.account = data.validates.account;
+                storage.validates.password = data.validates.password;
+                UserStore.emit(UserEvent.ON_SIGNIN_FAIL);
                 break;
         }
 

@@ -5,6 +5,7 @@ export default {
     UserAction: keymirror({
         SIGN_IN: null,
         SIGN_OUT: null,
+        SIGNIN_FAIL: null,
         
     }),
     UserEvent: keymirror({
