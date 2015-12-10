@@ -11,7 +11,7 @@ html, body { height: 100%;}
 #router-transition {
 
     position: relative;
-    width: 400px;
+    // width: 400px;
     height: 100%;
 
     .example-enter {
@@ -24,10 +24,10 @@ html, body { height: 100%;}
     .example-enter.example-enter-active {
         .animation(
             example-enter-action,
-            example-enter-action .25s linear 1, {
+            example-enter-action .25s 1, {
                 0% { 
                     left: -100%;
-                    opacity: 0;
+                    opacity: 0.3;
                 }
                 100% {
                     left: 0;
@@ -46,14 +46,14 @@ html, body { height: 100%;}
     .example-leave.example-leave-active {
         .animation(
             example-leave-action,
-            example-leave-action .25s linear 1, {
+            example-leave-action .25s 1, {
                 0% { 
                     left: 0; 
                     opacity: 1;
                 }
                 100% {
                     left: 100%;
-                    opacity: 0;
+                    opacity: 0.3;
                 }
 
             });
