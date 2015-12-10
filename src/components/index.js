@@ -5,4 +5,5 @@ module.exports = {
     BetBill: require('./BetBill'),  
     Navbar: require('./Navbar'),  
     SignIn: require('./SignIn'),  
+    RouteCSSTransitionGroup: require('./RouteCSSTransitionGroup')
 };
