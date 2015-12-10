@@ -31,20 +31,17 @@ class App extends React.Component {
                     <BS.NavItem eventKey="/bet-bill"> BetBill </BS.NavItem>
                     <BS.NavItem eventKey="/signin"> SignIn </BS.NavItem>
                 </BS.Nav>
-                <div id="router-transition">
-                    <MyComponents.RouteCSSTransitionGroup
-                        component="div" 
-                        transitionName="example"
-                        transitionEnterTimeout={250} 
-                        transitionLeaveTimeout={250}>
-                        {this.props.children}
-                    </MyComponents.RouteCSSTransitionGroup>
-                </div>
+                <MyComponents.RouteCSSTransitionGroup>
+                    {this.props.children}
+                </MyComponents.RouteCSSTransitionGroup>
             </div>
         );
     }
 };
-App.contextTypes = { history: PropTypes.history };
+App.contextTypes = { 
+    history: PropTypes.history,
+    transitionTo: React.PropTypes.func,
+};
 
 const renderRoute = () => {
     return (
