@@ -1,0 +1,53 @@
+#Component-App {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+    /* Navbar height (50px) + footer bar (60px) */
+    padding-bottom: 110px;
+    
+    footer {
+        background: #efefef;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        height: 60px;
+        border-top: 1px solid #ccc;
+        .footer-tabs {
+            width: 100%;
+            height: 100%;
+
+            .footer-tab-item {
+                position: relative;
+                text-align: center;
+                width: 25%;
+                height: 54px;
+                padding: 0;
+                .tab-label {
+                    .material-icons {
+                        display: block;
+                        font-size: 4rem;
+                    }
+                    .icon-text { 
+                        font-size: 1rem;
+                        color: #555;
+                    }
+                }
+            }
+            
+            .footer-tab-item:before {
+                position: absolute;
+                height: 100%;
+                border-left: 1px solid #ccc;
+                top: 2px;
+                left: 0;
+                content: ' ';
+            };
+        }
+    }
+
+
+
+
+}
