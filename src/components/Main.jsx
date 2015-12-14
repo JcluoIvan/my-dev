@@ -4,7 +4,9 @@ import { PropTypes } from 'react-router';
 
 import GameAction from '../actions/GameAction';
 import GameStore from '../stores/GameStore';
+import UserStore from '../stores/UserStore';
 import { GameEvent } from '../constants/GameConstants';
+import { Container } from './commons';
 
 import '../asset/Main';
 
@@ -16,7 +18,11 @@ class Main extends React.Component {
 
     constructor (props) {
         super(props);
-        this.state = {name: '', money: '', gameList: []};
+        this.state = {
+            name: UserStore.getName(),
+            money: UserStore.getMoney(),
+            gameList: GameStore.getGames()
+        };
     }
 
     componentDidMount () {
@@ -42,38 +48,40 @@ class Main extends React.Component {
 
     render () {
         return (
-            <div id='component-Main'>
-                <div className='container'>
-                    <ul className='list-group'>
-                        <li className='list-group-item'>
-                            <span className='badge'>AABBCDE</span>
-                            會員
-                        </li>
-                        <li className='list-group-item'>
-                            <span className='badge'>123456789000</span>
-                            目前餘額
-                        </li>
-                        <li className='list-group-item'>
-                            <button type='button' className='btn btn-xs btn-default pull-right'>
-                                查看注單
-                                <span className='badge'>9+</span>
-                            </button>
-                            目前注單
-                        </li>
-                    </ul>
-                </div>
-                <div className='container-fluid'>
-                    <div className='row-fluid'>
-                        {this.state.gameList.map( row => {
-                            return (
-                                <div className='col-xs-4 game-grid' key={row.getId()}>
-                                    <div>{row.getName()}</div>
-                                </div> 
-                            );
-                        })}
+            <Container scrollable>
+                <div id='component-Main'>
+                    <div className='container'>
+                        <ul className='list-group'>
+                            <li className='list-group-item'>
+                                <span className='badge'>{this.state.name}</span>
+                                會員
+                            </li>
+                            <li className='list-group-item'>
+                                <span className='badge'>{this.state.money}</span>
+                                目前餘額
+                            </li>
+                            <li className='list-group-item'>
+                                <button type='button' className='btn btn-xs btn-default pull-right'>
+                                    查看注單
+                                    <span className='badge'>9+</span>
+                                </button>
+                                目前注單
+                            </li>
+                        </ul>
+                    </div>
+                    <div className='container-fluid'>
+                        <div className='row-fluid'>
+                            {this.state.gameList.map( row => {
+                                return (
+                                    <div className='col-xs-4 game-grid' key={row.getId()}>
+                                        <div>{row.getName()}</div>
+                                    </div> 
+                                );
+                            })}
+                        </div>
                     </div>
                 </div>
-            </div>
+            </Container>
         );
     }
 }

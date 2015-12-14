@@ -5,7 +5,7 @@ import { GameAction, GameEvent} from '../constants/GameConstants';
 
 import { Game } from '../modules';
 let storage = {
-    games: {},
+    games: [],
 };
 
 const GameStore = Object.assign({}, EventEmitter.prototype, {
