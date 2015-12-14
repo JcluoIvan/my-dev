@@ -6,6 +6,7 @@ import UserStore from '../stores/UserStore';
 import UserAction from '../actions/UserAction';
 import { UserEvent } from '../constants/UserConstants';
 const TB = require('react-toolbox');
+const BS = require('react-bootstrap');
 
 let methods = {};
 class SignIn extends React.Component {
@@ -23,7 +24,7 @@ class SignIn extends React.Component {
     }
 
     componentWillUnmount() {
-        UserStore.removeListener(UserEvent.ON_SIGNIN, UserEvent.SIGNIN_FAIL);
+        UserStore.removeListener(UserEvent.ON_SIGNIN_FAIL, methods.handlerValidates);
     }
 
     toMain () {
@@ -67,13 +68,9 @@ class SignIn extends React.Component {
         // let star = new Array(this.state.pass.length + 1).join('*');
         return (
             <div id="component-SignIn">
-                <nav className="navbar navbar-default navbar-fixed-top">
-                    <div className="navbar-brand">LOGO</div>
-                </nav>
-                <br />
-                <br />
-                <br />
-                <br />
+                <BS.Well>
+                    <BS.PageHeader style={{textAlign: 'center'}}> LOGO </BS.PageHeader>
+                </BS.Well>
                 <div className="container">
                     <form role="form">
                         <div className="form-group">

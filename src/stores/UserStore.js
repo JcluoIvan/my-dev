@@ -10,6 +10,7 @@ let storage = {
         account: '', 
         password: '',
     }
+
 };
 
 const UserStore = Object.assign({}, EventEmitter.prototype, {
