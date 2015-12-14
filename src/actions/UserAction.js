@@ -29,6 +29,31 @@ let signOut = function () {
     })
 };
 
+/* 更新使用者 */
+let updateUser = function (id, account, name, money) {
+    let user = {
+        id: 1,
+        account: 'jyun',
+        name: 'jyun',
+        money: money ? money : 100,
+    };
+
+    Dispatcher.dispatch({
+        action: UserAction.USER_UPDATE,
+        user,
+    });
+}
+
+/* 選定遊戲 */
+let gameSelect = function (id) {
+    let gameSelect = {id};
+
+    Dispatcher.dispatch({
+        action: UserAction.GAME_SELECT,
+        gameSelect,
+    });
+}
+
 
 
 export default {
@@ -38,4 +63,10 @@ export default {
 
     /* 執行登出 */
     signOut,
+
+    /* 更新使用者 */
+    updateUser,
+
+    /* 選定遊戲 */
+    gameSelect,
 };

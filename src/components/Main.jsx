@@ -4,9 +4,12 @@ import { PropTypes } from 'react-router';
 
 import GameAction from '../actions/GameAction';
 import GameStore from '../stores/GameStore';
-import UserStore from '../stores/UserStore';
 import { GameEvent } from '../constants/GameConstants';
 import { Container } from './commons';
+
+import UserAction from '../actions/UserAction';
+import UserStore from '../stores/UserStore';
+import { UserEvent } from '../constants/UserConstants';
 
 import '../asset/Main';
 
@@ -26,20 +29,41 @@ class Main extends React.Component {
     }
 
     componentDidMount () {
-        methods.updateGameList = this.updateGameList.bind(this);
+        methods.handleUpdateGameList = this.handleUpdateGameList.bind(this);
+        methods.handleUpdateUser = this.handleUpdateUser.bind(this);
+        methods.goGameBet = this.goGameBet.bind(this);
 
-        GameStore.on(GameEvent.ON_GAMES_UPDATED, methods.updateGameList)
+        GameStore.on(GameEvent.ON_GAMES_UPDATED, methods.handleUpdateGameList);
+        UserStore.on(UserEvent.ON_USER_UPDATE, methods.handleUpdateUser);
+        UserStore.on(UserEvent.ON_GAME_SELECT, methods.goGameBet);
 
         GameAction.updateGames();
+        UserAction.updateUser(1, 'jyun', 'jyun', 120);
     }
 
     componentWillUnmount () {
-        GameStore.removeListener(GameEvent.ON_GAMES_UPDATED, methods.updateGameList);
+        GameStore.removeListener(GameEvent.ON_GAMES_UPDATED, methods.handleUpdateGameList);
+        UserStore.removeListener(UserEvent.ON_USER_UPDATE, methods.handleUpdateUser);
+        UserStore.removeListener(UserEvent.ON_GAME_SELECT, methods.goGameBet);
     }
 
-    updateGameList () {
+    handleUpdateUser () {
+        let name = UserStore.getName();
+        let money = UserStore.getMoney();
+        this.setState({name, money});
+    }
+
+    handleUpdateGameList () {
         let gameList = GameStore.getGames();
         this.setState({gameList});
+    }
+
+    goGameBet () {
+        this.context.transitionTo('/bet-list', {transition: 'show-from-right'});
+    }
+
+    gameSelect (id) {
+        UserAction.gameSelect(id);
     }
 
     toSignIn () {
@@ -73,7 +97,7 @@ class Main extends React.Component {
                         <div className='row-fluid'>
                             {this.state.gameList.map( row => {
                                 return (
-                                    <div className='col-xs-4 game-grid' key={row.getId()}>
+                                    <div className='col-xs-4 game-grid' key={row.getId()} onClick={this.gameSelect.bind(this, row.getId())}>
                                         <div>{row.getName()}</div>
                                     </div> 
                                 );
@@ -86,5 +110,5 @@ class Main extends React.Component {
     }
 }
 
-Main.contextTypes = { history: PropTypes.history }
+Main.contextTypes = { transitionTo: React.PropTypes.func }
 export default Main;
