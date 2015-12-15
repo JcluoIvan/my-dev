@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 const BS = require('react-bootstrap');
 const TB = require('react-toolbox');
 
 
 /* components */
     import MyComponents from './components'
-    import {ViewManager, View, Container} from './components/commons';
+    import { Container } from './components/commons';
 
 /* style */
     import './asset/style'; 
@@ -19,14 +20,34 @@ const iconTabs = [
     {icon: 'settings'   , path: '/bet-bill'   , label: '下注設定' }
 ];
 
+const views = [
+    {path: '/', component: MyComponents.SignIn},
+    {path: '/main', component: MyComponents.Main},
+    {path: '/bet-list', component: MyComponents.BetList},
+    {path: '/bet-bill', component: MyComponents.BetBill},
+
+];
+
+const transitionActions = [
+    {name: 'instant', enter: 100, leave: 100},
+    {name: 'show-from-left', enter: 250, leave: 250},
+    {name: 'show-from-right', enter: 250, leave: 250},
+];
+
+const getTransitionAction = function(transition) {
+    return transitionActions
+        .filter(a => a.name === transition)[0] || transitionActions[0];
+};
+
 
 class App extends React.Component {
 
-    constructor(props) {
-        super(props);
+    constructor(props, context) {
+        super(props, context);
         this.state = {
             tabIndex: 0 ,
-            path: iconTabs[0].path
+            path: iconTabs[0].path,
+            transitionName: 'show-from-right',
         };
     }
 
@@ -51,24 +72,49 @@ class App extends React.Component {
         )
     }
 
+    getChildContext () {
+        return {
+            transitionTo: this.transitionTo.bind(this)
+        }
+    }
+
+    transitionTo (path, args) {
+        let index = this.state.tabIndex;
+
+        iconTabs.map((tab, i) => {
+            if (tab.path === path)
+                index = i;
+        });
+
+        this.setState({
+            tabIndex: index,
+            path,
+            transitionName: args.transition,
+            // viewProps: args.viewProps || {},
+        });
+    }
+
 
     render () {
-        let { tabIndex } = this.state;
+        let { tabIndex, transitionName } = this.state;
+        let action = getTransitionAction(transitionName);
+
         return (
             <Container>
                 <MyComponents.Navbar label={this.state.label} />
                 <div id="Component-App">
-                    <ViewManager ref="tabs" name="tabs" 
-                        defaultView={this.state.path} 
-                        transition="show-from-right">
-
-                        <View name="/" component={MyComponents.SignIn} />
-                        <View name="/main" component={MyComponents.Main} />
-                        <View name="/bet-list" component={MyComponents.BetList} />
-                        <View name="/bet-bill" component={MyComponents.BetBill} />
-
-
-                    </ViewManager>
+                    <div className="Component-ViewManager">
+                        <ReactCSSTransitionGroup 
+                            transitionName={action.name}
+                            transitionEnterTimeout={action.enter}
+                            transitionLeaveTimeout={action.leave}>
+                            {views.map( o => {
+                                return o.path === this.state.path ? (
+                                    <o.component key={o.path} />
+                                ) : null;
+                            })}
+                        </ReactCSSTransitionGroup>
+                    </div>
                     <footer>
                         <TB.Tabs 
                             className="footer-tabs"
@@ -103,6 +149,11 @@ class App extends React.Component {
         // );
     }
 };
+
+App.childContextTypes = {
+    transitionTo: React.PropTypes.func
+};
+
 // const renderRoute = () => {\
 //     return (
 //         <Router history={history}>
