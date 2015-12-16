@@ -1,11 +1,12 @@
-
 import React from 'react';
 import { PropTypes } from 'react-router';
+
+import { Container } from './commons';
+import EventListener from '../plugins/EventListener';
 
 import GameAction from '../actions/GameAction';
 import GameStore from '../stores/GameStore';
 import { GameEvent } from '../constants/GameConstants';
-import { Container } from './commons';
 
 import UserAction from '../actions/UserAction';
 import UserStore from '../stores/UserStore';
@@ -17,6 +18,7 @@ const BS = require('react-bootstrap');
 
 let methods = {};
 
+@EventListener
 class Main extends React.Component {
 
     constructor (props) {
@@ -33,18 +35,26 @@ class Main extends React.Component {
         methods.handleUpdateUser = this.handleUpdateUser.bind(this);
         methods.goGameBet = this.goGameBet.bind(this);
 
-        GameStore.on(GameEvent.ON_GAMES_UPDATED, methods.handleUpdateGameList);
-        UserStore.on(UserEvent.ON_USER_UPDATE, methods.handleUpdateUser);
-        UserStore.on(UserEvent.ON_GAME_SELECT, methods.goGameBet);
+        this.watch(
+            GameStore,
+            GameEvent.ON_GAMES_UPDATED,
+            methods.handleUpdateGameList
+        );
+
+        this.watch(
+            UserStore,
+            UserEvent.ON_USER_UPDATE,
+            methods.handleUpdateUser
+        );
+
+        this.watch(
+            UserStore,
+            UserEvent.ON_GAME_SELECT,
+            methods.goGameBet
+        );
 
         GameAction.updateGames();
         UserAction.updateUser(1, 'jyun', 'jyun', 120);
-    }
-
-    componentWillUnmount () {
-        GameStore.removeListener(GameEvent.ON_GAMES_UPDATED, methods.handleUpdateGameList);
-        UserStore.removeListener(UserEvent.ON_USER_UPDATE, methods.handleUpdateUser);
-        UserStore.removeListener(UserEvent.ON_GAME_SELECT, methods.goGameBet);
     }
 
     handleUpdateUser () {
