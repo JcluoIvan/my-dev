@@ -20,11 +20,34 @@ module.exports = {
     module: {
         loaders: [
             {
-                test: /(\.js|\.jsx)$/,
-                loaders: ['react-hot', 'babel'],                
-                // loaders: ['babel'],                
-                exclude: /(node_modules)/,
-                include: path.join(__dirname, 'src')
+                // test: /(\.js|\.jsx)$/,
+                // loaders: ['react-hot', 'babel-loader'],
+                // // loaders: ['babel'],                
+                // exclude: /(node_modules)/,
+                // include: path.join(__dirname, 'src')
+                
+                test: /\.jsx?$/,
+                loader: 'babel',
+                exclude: /(node_modules|bower_components)/,
+                query: {
+                    stage: 0,
+                    optional: [ 'runtime' ],
+                    plugins: [
+                        'react-transform'
+                    ],
+                    extra: {
+                        'react-transform': {
+                            'transforms': [{
+                                'transform': 'react-transform-hmr',
+                                'imports': ['react'],
+                                'locals': ['module']
+                            }, {
+                                'transform': 'react-transform-catch-errors',
+                                'imports': ['react', 'redbox-react']
+                            }]
+                        }
+                    }
+                }
             }, {
                 test: /(\.scss|\.css)$/,
                 // loader: ExtractTextPlugin.extract('style', 'css?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss!sass?sourceMap')

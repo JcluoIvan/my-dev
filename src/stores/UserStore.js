@@ -9,8 +9,8 @@ let storage = {
     validates: {
         account: '', 
         password: '',
-    }
-
+    },
+    gameSelect: {},
 };
 
 const UserStore = Object.assign({}, EventEmitter.prototype, {
@@ -44,12 +44,17 @@ const UserStore = Object.assign({}, EventEmitter.prototype, {
         return storage.validates;
     },
 
+    /* 選定遊戲ID */
+    getGameSelectId () : Number {
+        return storage.gameSelect.id;
+    },
+
     dispatcherIndex: Dispatcher.register(function(data) {
 
         switch (data.action) {
 
             /* 登入成功 */
-            case UserAction.SIGN_IN: 
+            case UserAction.SIGN_IN: {
                 let {id, account, name, money} = data.user;
                 storage.user = {
                     id: parseInt(id, 10),
@@ -59,12 +64,38 @@ const UserStore = Object.assign({}, EventEmitter.prototype, {
                 };
                 UserStore.emit(UserEvent.ON_SIGNIN);
                 break;
+            }
+
             /* 登入失敗 */
-            case UserAction.SIGNIN_FAIL:
+            case UserAction.SIGNIN_FAIL: {
                 storage.validates.account = data.validates.account;
                 storage.validates.password = data.validates.password;
                 UserStore.emit(UserEvent.ON_SIGNIN_FAIL);
                 break;
+            }
+
+            /* 更新使用者資訊 */
+            case UserAction.USER_UPDATE: {
+                let {id, account, name, money} = data.user;
+                storage.user = {
+                    id: parseInt(id, 10),
+                    money: Number(money),
+                    account,
+                    name
+                };
+                UserStore.emit(UserEvent.ON_USER_UPDATE);
+                break;
+            }
+
+            /* 選定遊戲 */
+            case UserAction.GAME_SELECT: {
+                let {id} = data.gameSelect;
+                storage.gameSelect = {
+                    id: parseInt(id, 10),
+                };
+                UserStore.emit(UserEvent.ON_GAME_SELECT);
+                break;
+            }
         }
 
     })
