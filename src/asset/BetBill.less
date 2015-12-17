@@ -1,25 +1,50 @@
 #component-BetBill {
-    .font-size-1 {
-        font-size: 1em;
+    @color-red: #A71F28;
+    @color-blue: #1F70D1;
+    @color-black: #171717;
+
+    color: @color-black;
+    font-weight: bold;
+    font-size: 1em;
+
+    .color-red {
+        color: @color-red;
     }
 
-    .font-size-2 {
-
-    }
-    
-    .remove {
-        width: 30px;
+    .color-blue {
+        color: @color-blue;
     }
 
-    .margin-right-15 {
-        margin-right: 15px;
-    }
+    .bet-box {
+        
+        height: 6em;
 
-    .margin-right-30 {
-        margin-right: 30px;
-    }
+        .row {
+            margin-bottom: 0.2em;
+        }
 
-    .algin-center {
-        text-align: center;
+        .glyph {
+            width: 1.5em;
+            font-size: 1.2em;
+            text-align: center;
+            margin-right: 1em;
+        }
+
+        .team {
+            width: 10em;
+        }
+
+        .handicap {
+            width: 5.8em;
+        }
+
+        .money-box {
+            width: 5em;
+            height: 2.5em;
+            border-width: 2px;
+            border-color: @color-blue;
+            border-style: solid;
+            border-radius: 5px;
+        }
     }
 }
