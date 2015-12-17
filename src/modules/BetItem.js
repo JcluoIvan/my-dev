@@ -1,29 +1,33 @@
-import Bet from './Bet';
 
-var BetItem function (data, parent) {
+
+var BetItem = function (data, parent) {
     let storage = this.storage = {
         id: null, /* type id or type key */
-        label: null, /* 球頭 */
-        values: [], /* 球投資料 */
+        label: null, /* 球頭 3-50 (string) */
+        values: [], /* 球投資料 3, -50 */
         odds: 0, /* 賠率 */
         parent,
     };
- 
+    
+    storage.id = parseInt(data.id, 10);
+    storage.label = data.label;
+    storage.odds = Number(data.odds);
+
 }
 
-Racecard.prototype.getId = function () : Number {
+BetItem.prototype.getId = function () : Number {
     return this.storage.id;
 };
-Racecard.prototype.getLabel = function () : String {
+BetItem.prototype.getLabel = function () : String {
     return this.storage.label;
 };
-Racecard.prototype.getValues = function () : Array {
+BetItem.prototype.getValues = function () : Array {
     return this.storage.values;
 };
-Racecard.prototype.getOdds = function () : Number {
+BetItem.prototype.getOdds = function () : Number {
     return this.storage.odds;
 };
-Racecard.prototype.getGame = function () : Object {
+BetItem.prototype.getParent = function () : Object {
     return this.storage.parnet;
 }
 

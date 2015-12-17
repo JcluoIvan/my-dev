@@ -1,11 +1,16 @@
 
 import { EventEmitter } from 'events';
 import Dispatcher from '../dispatcher/Dispatcher';
-import { GameAction, GameEvent} from '../constants/GameConstants';
+/* constains */
+    import { GameAction, GameEvent} from '../constants/GameConstants';
+    import { UserAction } from '../constants/UserConstants';
 
 import { Game } from '../modules';
 let storage = {
-    games: {},
+    games: [],
+    selected: {
+        bet_items: [],
+    }
 };
 
 const GameStore = Object.assign({}, EventEmitter.prototype, {
@@ -20,12 +25,23 @@ const GameStore = Object.assign({}, EventEmitter.prototype, {
         return storage.games.filter(g => g.getId() === id)[0] || null;
     },
 
+    getSelectedBetItems() : Array {
+
+    },
     dispatcherIndex: Dispatcher.register(function(data) {
         switch (data.action) {
-            case GameAction.GAMES_UPDATED:
+            case UserAction.SIGN_IN:
+            case GameAction.GAMES_UPDATED: {
+
                 storage.games = data.games.map(g => new Game(g));
                 GameStore.emit(GameEvent.ON_GAMES_UPDATED);
-                break;
+            } break;
+
+            case GameAction.SELECT_BET_ITEM: {
+
+                storage.selected.bet_items.push(data.bet_items);
+                GameStore.emit(GameEvent.ON_BET_ITEM_SELECTED);
+            } break;
             
         }
 

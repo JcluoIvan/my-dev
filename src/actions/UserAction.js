@@ -3,6 +3,95 @@ import { UserAction } from '../constants/UserConstants';
 
 import Ajax from '../plugins/Ajax';
 
+/* test */
+
+    var test = {
+        types: [
+            {id: 1, label: '讓球'},
+            {id: 2, label: '大小盤'},
+            {id: 3, label: '單雙'},
+            {id: 3, label: '獨贏'},
+        ],
+        racecards: [
+            {
+                id: 1, 
+                label: 'BKN-布魯克林籃網 NYK-紐約尼克[主] 12-05 08:05',
+                time: new Date,
+                teams: [
+                    {
+                        id: 'BKN',
+                        label: '布魯克林籃網',
+                        type: 'C',
+                        strong: false,
+                        items: [
+                            {
+                                id: 1,
+                                label: '3-50',
+                                values: [3, -50],
+                                odds: 0.950
+                            },
+                            {
+                                id: 2,
+                                label: '193+50',
+                                values: [193, +50],
+                                odds: 0.950
+                            },
+                            {
+                                id: 3,
+                                label: null,
+                                values: null,
+                                odds: 0.940
+                            },
+                            {
+                                id: 4,
+                                label: '客隊贏',
+                                values: null,
+                                odds: 0.950
+                            }
+                        ],
+                    },
+                    {
+                        id: 'NYK',
+                        label: '紐約尼克',
+                        type: 'H',
+                        strong: true,
+                        items: [
+                            {
+                                id: 1,
+                                label: null,
+                                values: null,
+                                odds: 0.950
+                            },
+                            {
+                                id: 2,
+                                label: null,
+                                values: null,
+                                odds: 0.940
+                            },
+                            {
+                                id: 3,
+                                label: null,
+                                values: null,
+                                odds: 0.950
+                            },
+                            {
+                                id: 4,
+                                label: '主隊贏',
+                                values: null,
+                                odds: 0.950
+                            }
+                        ],
+                    }
+                ],
+
+            },
+        ]
+
+    }
+
+/* test end */ 
+
+
 /* 執行登入 */
 let signIn = function (account, password) {
     /* do ajax */
@@ -11,7 +100,19 @@ let signIn = function (account, password) {
     if('sam' === account && '0000' === password){
         Dispatcher.dispatch({
             action: UserAction.SIGN_IN,
-            user: {id, account, name, money}
+            user: {id, account, name, money},
+            games: [
+                {id: 1, name: 'NBA 籃球', bet_types: test.types, racecards: test.racecards},
+                {id: 2, name: 'CPBL 棒球'},
+                {id: 3, name: 'SBL 籃球'},
+                {id: 4, name: 'CBL 籃球'},
+                {id: 5, name: 'CBL 籃球'},
+                {id: 6, name: 'ABL 籃球'},
+                {id: 7, name: 'CBA 籃球'},
+                {id: 8, name: 'NBL 籃球'},
+                {id: 9, name: 'ACB 籃球'},
+                {id: 10, name: 'EL 籃球'},
+            ]
         });
     } else {
         Dispatcher.dispatch({

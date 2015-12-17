@@ -4,6 +4,7 @@ import keymirror from 'keymirror';
 export default {
     GameAction: keymirror({
         GAMES_UPDATED: null,
+        SELECT_BET_ITEM: null,
         
     }),
     GameEvent: keymirror({

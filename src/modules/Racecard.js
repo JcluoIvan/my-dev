@@ -1,10 +1,11 @@
-import Bet from './Bet';
 
-var Racecard function (data, parent) {
+
+import Team from './Team';
+var Racecard = function (data, parent) {
     let storage = this.storage = {
         id: null,
         teams: [
-        ]
+        ],
         label: null,
         time: null,
         parent,
@@ -13,13 +14,13 @@ var Racecard function (data, parent) {
 
     storage.id = parseInt(data.id, 10);
     storage.label = data.label;
-    storage.teams = data.teams.map(t => new Team(t, this));
+    storage.teams = (data.teams || []).map(t => new Team(t, this));
 };
 
 Racecard.prototype.getId = function () : Number {
     return this.storage.id;
 };
-Racecard.prototype.getGame = function () : Object {
+Racecard.prototype.getParent = function () : Object {
     return this.storage.parnet;
 }
 Racecard.prototype.getTeams = function () : Array {
