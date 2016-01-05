@@ -10,7 +10,7 @@ import Ajax from '../plugins/Ajax';
             {id: 1, label: '讓球'},
             {id: 2, label: '大小盤'},
             {id: 3, label: '單雙'},
-            {id: 3, label: '獨贏'},
+            {id: 4, label: '獨贏'},
         ],
         racecards: [
             {
@@ -38,7 +38,7 @@ import Ajax from '../plugins/Ajax';
                             },
                             {
                                 id: 3,
-                                label: null,
+                                label: '單',
                                 values: null,
                                 odds: 0.940
                             },
@@ -70,7 +70,7 @@ import Ajax from '../plugins/Ajax';
                             },
                             {
                                 id: 3,
-                                label: null,
+                                label: '雙',
                                 values: null,
                                 odds: 0.950
                             },

@@ -37,9 +37,9 @@ const GameStore = Object.assign({}, EventEmitter.prototype, {
                 GameStore.emit(GameEvent.ON_GAMES_UPDATED);
             } break;
 
-            case GameAction.SELECT_BET_ITEM: {
+            case GameAction.SELECT_BETITEMS: {
 
-                storage.selected.bet_items.push(data.bet_items);
+                storage.selected.bet_items = data.bet_items;
                 GameStore.emit(GameEvent.ON_BET_ITEM_SELECTED);
             } break;
             

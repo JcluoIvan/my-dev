@@ -27,24 +27,30 @@ let updateGames = function () {
     });
 };
 
-
-let selectBetItem = function (bet_item) {
-
+let selectBetItems = function(bet_items){
     Dispatcher.dispatch({
-        action: GameAction.SELECT_BET_ITEM,
-        bet_item,
-    });
-
+        action: GameAction.SELECT_BETITEMS,
+        bet_items,
+    })
 };
 
-let unSelectBetItem = function (bet_item) {
+// let selectBetItem = function (bet_item) {
 
-    Dispatcher.dispatch({
-        action: GameAction.UNSELECT_BET_ITEM,
-        bet_item,
-    });
+//     Dispatcher.dispatch({
+//         action: GameAction.SELECT_BET_ITEM,
+//         bet_item,
+//     });
 
-};
+// };
+
+// let unSelectBetItem = function (bet_item) {
+
+//     Dispatcher.dispatch({
+//         action: GameAction.UNSELECT_BET_ITEM,
+//         bet_item,
+//     });
+
+// };
 
 
 
@@ -52,6 +58,7 @@ export default {
 
     /* 更新遊戲清單 */
     updateGames,
-    selectBetItem,
-    unSelectBetItem,
+    // selectBetItem,
+    // unSelectBetItem,
+    selectBetItems,
 };

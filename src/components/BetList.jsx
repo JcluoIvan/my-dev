@@ -5,6 +5,7 @@ const BS = require('react-bootstrap');
 const TB = require('react-toolbox');
 
 import {Container} from './commons';
+import EventListener from '../plugins/EventListener';
 /* stores */
     import GameStore from '../stores/GameStore';
 
@@ -15,41 +16,7 @@ import {Container} from './commons';
     import UserAction from '../actions/UserAction';
     import GameAction from '../actions/GameAction';
 
-var data_list = [
-    {
-        id: 1,
-        name: 'BKN-布魯克林籃網 NYK-紐約尼克[主] 12-05 08:05', 
-        bet_type: [
-            {type: 1, context: '[讓球] 3-50 0.950 0.940', active: false},
-            {type: 2, context: '[大小盤] 大 193+50 0.940 小 0.950', active: false},
-            {type: 3, context: '[單雙] 單 0.940 雙 0.950', active: false},
-            {type: 4, context: '[獨贏] 主隊贏 客隊贏', active: false}
-        ]
-    },
-    {
-        id: 2,
-        name: 'BKN-布魯克林籃網 NYK-紐約尼克[主] 12-05 08:05', 
-        bet_type: [
-            {type: 1, context: '[讓球] 3-50 0.950 0.940', active: false},
-            {type: 2, context: '[大小盤] 大 193+50 0.940 小 0.950', active: false},
-            {type: 3, context: '[單雙] 單 0.940 雙 0.950', active: false},
-            {type: 4, context: '[獨贏] 主隊贏 客隊贏', active: false}
-        ]
-    },
-    {
-        id: 3,
-        name: 'BKN-布魯克林籃網 NYK-紐約尼克[主] 12-05 08:05', 
-        bet_type: [
-            {type: 1, context: '[讓球] 3-50 0.950 0.940', active: false},
-            {type: 2, context: '[大小盤] 大 193+50 0.940 小 0.950', active: false},
-            {type: 3, context: '[單雙] 單 0.940 雙 0.950', active: false},
-            {type: 4, context: '[獨贏] 主隊贏 客隊贏', active: false}
-        ]
-    },
-];
-
-// console.log(data_list);
-var methods = {};
+@EventListener
 class BetList extends React.Component {
 
     constructor (props) {
@@ -57,11 +24,11 @@ class BetList extends React.Component {
         // let id = UserStore.getGameSelectId();
         let id = 1;
         this.state = {
-            games: data_list, 
+            games: {}, 
             button_active: false, 
             bet_chice: '選擇下注：',
             game: GameStore.getGame(id),
-            bet_types: [],
+            bet_items: [],
             active_items: GameStore.getSelectedBetItems(),
             // Game: Game,
         };
@@ -72,18 +39,25 @@ class BetList extends React.Component {
     }
 
     componentDidMount() {
-        methods.onGameUpdated = this.onGameUpdated.bind(this);
 
-        GameStore.on(GameEvent.ON_GAMES_UPDATED, methods.onGameUpdated);
+        this.watch(
+            GameStore,
+            GameEvent.ON_GAMES_UPDATED,
+            this.onGameUpdated.bind(this)
+        );
 
-        // GameStore.on(GameEvent.ON_BET_ITEM_SELECTED, methods.onBetItemChanged);
+        /*
+        this.watch(
+            GameStore,
+            GameEvent.ON_BET_ITEM_SELECTED,
+            this.onBetItemChanged(this)
+        );
+    */
     }
-
 
     onGameUpdated () {
         // var id = UserStore.getGameSelectId();
         var id = 1;
-        GameStore.getGame(id);
         this.setState({game: GameStore.getGame(id)});
         
     }
@@ -91,64 +65,24 @@ class BetList extends React.Component {
         setState({ active_items: GameStore.getSelectedBetItems()});
     }
     onSubmitClick ( id, type ) {
-        let {games} = this.state;
-        let bet = games.filter(game => game.id === id)[0]
-            .bet_type.filter(bet => bet.type === type)[0];
-        bet.active = ! bet.active;
+        let {game, games} = this.state;
+        
+    }
+
+    onSelectBetItem ( item, isSelect ) {
+        let bet_items = this.state.bet_items;
         let count = 0;
-        
-        games.forEach(game => {
-            let betlist = game.bet_type;
-            betlist.forEach(bettypelist =>{
-                if(bettypelist.active===true){
-                    count++;
-                }
-            })
-
-        })
-        this.setState({games, count, button_active: true});
-    }
-
-    renderBets(data /*racecards*/ ) {
-        
-        let rows = data.bet_type;
-        let columns = [];
-        let step = 2;
-        for (var i = 0; i < rows.length; i += step) {
-            columns.push(rows.slice(i, i + step));
+        let bs_style = this.state.bs_style;
+        switch(isSelect) {
+            case true:
+                bet_items = bet_items.filter(i => i !== item);
+                break;
+            case false:
+                bet_items.push( item );
+                break;
         }
-        return columns.map(arr => {
-            // console.log(arr);
-            return (
-                <tr>
-                    {arr.map(row => {
-                        return (
-                            /* <BetType gameId={1} rececordId={2} typeId={3} /> */
-                            <td /* className={row.active ? 'active' : '' } */> 
-                                <div onClick={this.onSubmitClick.bind(this, data.id, row.type)}> {row.context} {row.active}</div>
-                            </td>
-                        );
-                    })}
-                </tr>
-            );
-        });
-
-    }
-
-    handleSnackbarTimeout (value) {
-        // console.log('handleSnackbarClick', event, instance);
-        this.setState({ button_active: false });
-
-    };
-
-    handleClick(value) {
-        this.setState({ button_active: true });
-        let bt_active = this.state.button_active;
-        // console.log(bt_active);
-    };
-
-    onSubmitClickBet ( item ) {
-        GameAction.selectBetItem(item);
+        count = bet_items.length;
+        this.setState({bet_items, count, button_active: true});
     }
 
     /* 取得所有賽事 */
@@ -157,80 +91,90 @@ class BetList extends React.Component {
         if (! game) return null;
         return game.getRacecards().map(racecard => {
             return (
-                <BS.ListGroupItem header={racecard.getLabel()}>
+                <div className="list-group-item">
+                    <div className="list-group-item-label">
+                        {racecard.getLabel()} 
+                    </div>
                     {this.renderRacecardsBet(racecard)}
-                </BS.ListGroupItem>
+                </div>
             );
         })
     }
 
 
-    /* 尚未寫完
-    ....(item),
-        return this.storage.selected.bet_items.filter(i => i === item).length > 0;
-    */
+    /* 檢查 active */
+    isActiveItem(item) {
+        return this.state.bet_items.filter(i => i === item).length > 0;
+    }
+    
 
-    /*  */
+    /* 取得賽事的單一玩法 */
     renderRacecardsBet(racecard) {
         let {game, games} = this.state;
+        console.log(game);
         if (! game) return null;
         let rows = game.getBetTypes();
         return rows.map(bet_type => {
             let teams = racecard.getTeams();
             return (
-                <span style={{display: 'block'}}>
-                    <span style={{display: 'inline-block', width: '33%'}}>
+                <BS.Row>
+                    <BS.Col xs={3}>
                         {bet_type.getLabel()}
-                    </span>
-
-                    
-                    {teams.map(team => {
-                        let item = team.getItem(bet_type.getId());
-                        /* 檢查 active */
-                        // let active = this.isActiveItem(item) ? 'active' : '';
-                        return (
-                            <span 
-                                /*
-                                className={active}
-                                onClick={this.onSubmitClickBet.bind(this, item)}
-                                */
-                                style={{display: 'inline-block', width: '33%'}}>
-                                {item ? item.getLabel() : null}
-                                (
-                                {item ? item.getOdds() : null}
-                                )
-                            </span>
-                        )
-                    })}
-                </span>
+                    </BS.Col>
+                    <BS.Col xs={9}>
+                        {teams.map(team => {
+                            let item = team.getItem(bet_type.getId());
+                            /* 檢查 active */
+                            let isSelect = this.isActiveItem(item); // false
+                            let bs_style = isSelect ? 'primary' : 'default';
+                            let style = isSelect ? {color: 'red'} : {};
+                            style = Object.assign({}, style, {display: 'inline-block', width: '33%'});
+                            return (
+                                <BS.Button 
+                                    bsStyle={bs_style}
+                                    style={{width: '50%'}}
+                                    onClick={this.onSelectBetItem.bind(this, item, isSelect)} 
+                                    >
+                                    {item ? item.getLabel() : null}
+                                    ( {item ? item.getOdds() : null} )
+                                </BS.Button>
+                            )
+                        })}
+                    </BS.Col>
+                </BS.Row>
             );
         });
         
     }
+
+    handleSnackbarTimeout (value) {
+        this.setState({ button_active: false });
+    };
+
+    handleClick(value) {
+        // this.setState({ button_active: true });
+        let bet_items = this.state.bet_items;
+        GameAction.selectBetItems(bet_items);
+        this.context.transitionTo('/bet-bill', {
+            transition: 'show-from-right'
+        });
+    };
 
     render () {
         let {game, games} = this.state;
         return (
             <Container scrollable>
                 <div>
-                    <BS.ListGroup>
+                    <div className="list-group">
                         {this.renderRacecards()}
-                    </BS.ListGroup>
-
-                    <BS.ListGroup>
-                        {games.map(data => {
-                            return (
-                                <BS.ListGroupItem header={data.name}>
-                                    <BS.Table bordered condensed hover>
-                                        {this.renderBets(data)}
-                                    </BS.Table>
-                                </BS.ListGroupItem>
-                            );
-                        })}
-                    </BS.ListGroup>
+                    </div>
                     <div>
                         <section>
-                            <button label='Show snackbar' raised primary onClick={this.handleClick.bind(this)}>確認</button>
+                            <BS.Button bsStyle='primary' 
+                                block
+                                disabled={this.state.bet_items.length==0}
+                                onClick={this.handleClick.bind(this)}>確認
+                            </BS.Button>
                             <TB.Snackbar 
                                 active={this.state.button_active}
                                 icon='question_answer'
@@ -241,13 +185,12 @@ class BetList extends React.Component {
                             />
                         </section>
                     </div>
-
-
                 </div>
             </Container>
         );
     }
-}
-
-
+};
+BetList.contextTypes = {
+    transitionTo: React.PropTypes.func
+};
 export default BetList;
